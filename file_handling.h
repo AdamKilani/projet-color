@@ -4,7 +4,27 @@
 #include <stdbool.h>
 #include "mastermind.h"
 
+/**
+ * @brief Loads the secret code from a file.
+ * 
+ * This function reads the secret code from a file and stores it in the given `secretCode` array.
+ * The function returns 0 if the secret code is loaded successfully, or a negative error code otherwise.
+ *
+ * @param filename The name of the file containing the secret code.
+ * @param secretCode The array to store the secret code in.
+ * @return int 0 if the secret code is loaded successfully, or a negative error code otherwise.
+ */
 int loadSecretCodeFromFile(const char *filename, Color secretCode[]);
+
+/**
+ * @brief Checks if a sequence of colors is valid.
+ * 
+ * This function checks if a sequence of colors is valid, i.e., if all colors in the sequence are valid.
+ *
+ * @param sequence The array of colors to check.
+ * @param length The number of colors in the sequence.
+ * @return bool True if the sequence is valid, false otherwise.
+ */
 bool isValidColorSequence(Color sequence[], int length);
 
 #endif // FILE_HANDLING_H
@@ -16,39 +36,15 @@ bool isValidColorSequence(Color sequence[], int length);
 #include "file_handling.h"
 #include "mastermind.h"
 
-int loadSecretCodeFromFile(const char *filename, Color secretCode[])
-{
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        return -1; // error opening file
-    }
-
-    int count = 0;
-    while (fscanf(file, "%c", &secretCode[count]) == 1) {
-        if (!isValidColor(secretCode[count])) {
-            fclose(file);
-            return -2; // error: invalid color in file
-        }
-        count++;
-        if (count >= MAX_SECRET_CODE_LENGTH) {
-            break;
-        }
-    }
-    fclose(file);
-
-    if (count < MAX_SECRET_CODE_LENGTH) {
-        return -3; // error: file does not contain enough colors
-    }
-
-    return 0; // success
-}
-
-bool isValidColorSequence(Color sequence[], int length)
-{
-    for (int i = 0; i < length; i++) {
-        if (!isValidColor(sequence[i])) {
-            return false;
-        }
-    }
-    return true;
-}
+/**
+ * @brief Loads the secret code from a file.
+ * 
+ * This function reads the secret code from a file and stores it in the given `secretCode` array.
+ * The function returns 0 if the secret code is loaded successfully, or a negative error code otherwise.
+ *
+ * @param filename The name of the file containing the secret code.
+ * @param secretCode The array to store the secret code in.
+ * @return int 0 if the secret code is loaded successfully, or a negative error code otherwise.
+ * @details The function first opens the file with the given name in read mode.
+ * If the file cannot be opened, the function returns -1.
+ * Then, the function reads colors from the file
