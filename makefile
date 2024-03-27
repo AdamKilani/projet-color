@@ -1,10 +1,10 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -std=c99
 
-SRCS=main.c game.c
+SRCS=main.c mastermind.c
 OBJS=$(SRCS:.c=.o)
 
-EXEC=guessing_game
+EXEC=mastermind
 
 .PHONY: all clean
 
