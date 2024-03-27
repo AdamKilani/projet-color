@@ -1,6 +1,23 @@
-# Use CFLAGS to store compiler flags and CXXFLAGS for C++ compiler flags
-CFLAGS=-Wall -Wextra -std=c99 -pedantic -O2
-# The CFLAGS variable stores various compiler flags that control how the
-# compiler will behave. In this case, we are enabling warnings, using the
-# C99 standard, enabling pedantic mode to enforce strict conformance to the
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c99
+SRCDIR = src
+BINDIR = bin
+SRC = $(wildcard $(SRCDIR)/*.c)
+OBJ = $(SRC:$(SRCDIR)/%.c=$(BINDIR)/%.o)
+EXECUTABLE = mastermind
 
+.PHONY: all clean
+
+all: $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(BINDIR)/%.o: $(SRCDIR)/%.c | $(BINDIR)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(BINDIR):
+	mkdir -p $(BINDIR)
+
+clean:
+	rm -rf $(BINDIR) $(EXECUTABLE)
