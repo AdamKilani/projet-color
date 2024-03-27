@@ -1,74 +1,71 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
-#define NUM_COLORS 6
-#define CODE_LENGTH 4
-
-typedef enum {
-    RED,
-    CYAN,
-    YELLOW,
-    GREEN,
-    BLUE,
-    PURPLE
-} Color;
-
-void generateSecretCode(Color secretCode[]) {
-    srand(time(NULL));
-    for (int i = 0; i < CODE_LENGTH; i++) {
-        secretCode[i] = (Color)(rand() % NUM_COLORS);
-    }
-}
-
-void printInstructions() {
-    printf("Welcome to Mastermind!\n");
-    printf("You have to guess a sequence of 4 secret colors in 10 tries or less.\n");
-    printf("The available colors are: Red, Cyan, Yellow, Green, Blue, Purple\n");
-    printf("You will receive feedback after each guess:\n");
-    printf(" - Number of correct colors in the correct position (black pin)\n");
-    printf(" - Number of correct colors in the wrong position (white pin)\n");
-}
-
-void printColor(Color color) {
-    switch (color) {
-        case RED:
-            printf("Red");
-            break;
-        case CYAN:
-            printf("Cyan");
-            break;
-        case YELLOW:
-            printf("Yellow");
-            break;
-        case GREEN:
-            printf("Green");
-            break;
-        case BLUE:
-            printf("Blue");
-            break;
-        case PURPLE:
-            printf("Purple");
-            break;
-    }
-}
-
-void printColors(Color colors[]) {
-    for (int i = 0; i < CODE_LENGTH; i++) {
-        printColor(colors[i]);
-        printf(" ");
-    }
-    printf("\n");
-}
-
-void evaluateGuess(Color secretCode[], Color guess[], int guessNum) {
-    int correct = countCorrect(secretCode, guess);
-    int misplaced = countMisplaced(secretCode, guess);
-
-    printf("| %-7d| ", guessNum);
-    printColors(guess);
-    printf("| black: %d, white: %d |\n", correct, misplaced);
-}
-
 int countCorrect(Color secretCode[], Color guess[]) {
-   
+    int count = 0;
+    for (int i = 0; i < CODE_LENGTH; i++) {
+        if (secretCode[i] == guess[i]) {
+            count++;
+        }
+    }
+    return count;
+}
+
+int countMisplaced(Color secretCode[], Color guess[]) {
+    // countMisplaced function calculates and returns the number of correct colors in the wrong position between the secretCode and guess arrays.
+    int count = 0;
+    for (int i = 0; i < NUM_COLORS; i++) {
+        int correctPosition = 0;
+        for (int j = 0; j < CODE_LENGTH; j++) {
+            if (secretCode[j] == (Color)i && guess[j] != (Color)i) {
+                correctPosition++;
+            }
+        }
+        if (correctPosition == 1) {
+            count++;
+        }
+    }
+    return count;
+}
+
+int main() {
+    // Initialize arrays to store the secret code and the user's guess.
+    Color secretCode[CODE_LENGTH];
+    Color guess[CODE_LENGTH];
+
+    // Print the game instructions.
+    printInstructions();
+
+    // Generate the secret code.
+    generateSecretCode(secretCode);
+
+    // Main game loop.
+    for (int i = 1; i <= 10; i++) {
+        printf("Enter your guess %d: ", i);
+        for (int j = 0; j < CODE_LENGTH; j++) {
+            scanf("%d", &guess[j]);
+            guess[j] = (Color)guess[j];
+        }
+
+        // Evaluate the user's guess and display the feedback.
+        evaluateGuess(secretCode, guess, i);
+
+        // Check if the user has guessed the secret code correctly.
+        if (compareCodes(secretCode, guess)) {
+            printf("Congratulations! You've guessed the secret code!\n");
+            break;
+        }
+    }
+
+    return 0;
+}
+
+
+
+int compareCodes(Color secretCode[], Color guess[]) {
+    int equal = 1;
+    for (int i = 0; i < CODE_LENGTH; i++) {
+        if (secretCode[i] != guess[i]) {
+            equal = 0;
+            break;
+        }
+    }
+    return equal;
+}
