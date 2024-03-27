@@ -6,9 +6,76 @@
 
 #define COLOR_STR_LENGTH 20
 
-void print_color_options(void);
-Color string_to_color(const char *color_str);
-void print_colors(Color *colors, int length);
+// Function to print the available color options for the user
+void print_color_options(void) {
+    printf("\nAvailable colors:\n");
+    printf("1. Red\n");
+    printf("2. Green\n");
+    printf("3. Blue\n");
+    printf("4. Purple\n");
+    printf("5. Yellow\n");
+    printf("6. Orange\n");
+    printf("7. White\n");
+    printf("8. Black\n");
+}
+
+// Function to convert a color string to its corresponding Color enumeration value
+Color string_to_color(const char *color_str) {
+    if (strcmp(color_str, "Red") == 0) {
+        return RED;
+    } else if (strcmp(color_str, "Green") == 0) {
+        return GREEN;
+    } else if (strcmp(color_str, "Blue") == 0) {
+        return BLUE;
+    } else if (strcmp(color_str, "Purple") == 0) {
+        return PURPLE;
+    } else if (strcmp(color_str, "Yellow") == 0) {
+        return YELLOW;
+    } else if (strcmp(color_str, "Orange") == 0) {
+        return ORANGE;
+    } else if (strcmp(color_str, "White") == 0) {
+        return WHITE;
+    } else if (strcmp(color_str, "Black") == 0) {
+        return BLACK;
+    } else {
+        return INVALID_COLOR;
+    }
+}
+
+// Function to print an array of Color values as a string representation
+void print_colors(Color *colors, int length) {
+    for (int i = 0; i < length; i++) {
+        switch (colors[i]) {
+            case RED:
+                printf("Red ");
+                break;
+            case GREEN:
+                printf("Green ");
+                break;
+            case BLUE:
+                printf("Blue ");
+                break;
+            case PURPLE:
+                printf("Purple ");
+                break;
+            case YELLOW:
+                printf("Yellow ");
+                break;
+            case ORANGE:
+                printf("Orange ");
+                break;
+            case WHITE:
+                printf("White ");
+                break;
+            case BLACK:
+                printf("Black ");
+                break;
+            default:
+                printf("Invalid Color ");
+                break;
+        }
+    }
+}
 
 int main() {
     Color secret_code[CODE_LENGTH];
@@ -34,45 +101,4 @@ int main() {
             getchar(); // consume the newline character
 
             if (!loadSecretCodeFromFile(filename, secret_code)) {
-                printf("Error: Unable to load the secret code from the file.\n");
-                return 1;
-            }
-            printf("Secret code loaded from file.\n");
-            break;
-        }
-        case 2:
-            generateSecretCode(secret_code);
-            printf("Random secret code generated.\n");
-            break;
-        default:
-            printf("Invalid choice. Exiting...\n");
-            return 1;
-    }
-
-    printInstructions();
-
-    for (int num_guesses = 0; num_guesses < MAX_GUESSES; num_guesses++) {
-        printf("\nEnter your guess (e.g., Red Green Blue Purple): ");
-        for (int i = 0; i < CODE_LENGTH; i++) {
-            char color_str[COLOR_STR_LENGTH];
-            scanf("%s", color_str);
-            guess[i] = string_to_color(color_str);
-        }
-        getchar(); // consume the newline character
-
-        evaluateGuess(secret_code, guess);
-
-        if (countCorrect(secret_code, guess) == CODE_LENGTH) {
-            printf("\nCongratulations! You've guessed the code!\n");
-            break;
-        }
-    }
-
-    printf("\nThe secret code was: ");
-    print_colors(secret_code, CODE_LENGTH);
-    printf("\n");
-
-    return 0;
-}
-
-void print_color_options(void
+               
