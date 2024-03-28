@@ -1,9 +1,8 @@
+// file_handling.h
+
 #ifndef FILE_HANDLING_H
 #define FILE_HANDLING_H
 
-#include "mastermind.h"
+int load_sequence_from_file(char filename[], char sequence[]);
 
-int loadSecretCodeFromFile(const char *filename, Color secretCode[]);
-int isValidColorSequence(Color sequence[]);
-
-#endif // FILE_HANDLING_H
+#endif
